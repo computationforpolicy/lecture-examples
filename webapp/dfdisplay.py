@@ -4,11 +4,16 @@ import pandas as pd
 app = Flask(__name__)
 
 
+import config
+
+
+df = pd.read_csv(config.file_to_display)
+
+
 @app.route('/')
 def load_dataframe():
-    filename = '../Current_Employee_Names__Salaries__and_Position_Titles.csv'
-    df = pd.read_csv(filename)
-    return render_template('unfiltered.html', data=df.to_html())
+    cols = list(df.columns)
+    return render_template('dataframe.html', data=df.to_dict(), cols=cols, nrows=len(df))
 
 
 @app.errorhandler(404)
